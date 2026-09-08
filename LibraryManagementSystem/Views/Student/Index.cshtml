@@ -1,0 +1,60 @@
+﻿@model IEnumerable<LibraryManagementSystem.Models.Student>
+
+@{
+    ViewData["Title"] = "Students";
+}
+
+<h1>Students</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New Student</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Status</th>
+            <th>Access</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Email</td>
+                <td>@item.Phone</td>
+                <td>
+                    @if (item.IsActive)
+                    {
+                        <span class="badge bg-success">Active</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Inactive</span>
+                    }
+                </td>
+                <td>
+                    @if (item.HasAccess)
+                    {
+                        <span class="badge bg-success">Access Granted</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning">No Access</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.StudentId" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.StudentId" class="btn btn-sm btn-info">Details</a>
+                    <a asp-action="Payment" asp-route-id="@item.StudentId" class="btn btn-sm btn-success">Pay</a>
+                    <a asp-action="Delete" asp-route-id="@item.StudentId" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

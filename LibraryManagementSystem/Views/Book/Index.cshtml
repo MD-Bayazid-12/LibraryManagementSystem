@@ -1,0 +1,44 @@
+﻿@model IEnumerable<LibraryManagementSystem.Models.Book>
+
+@{
+    ViewData["Title"] = "Books";
+}
+
+<h1>Books</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New Book</a>
+</p>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                @if (!string.IsNullOrEmpty(item.BookImage))
+                {
+                    <img src="@item.BookImage" class="card-img-top" alt="@item.Title" style="height: 200px; object-fit: cover;">
+                }
+                else
+                {
+                    <div class="card-img-top bg-secondary text-white text-center" style="height: 200px; display: flex; align-items: center; justify-content: center;">
+                        <h3>No Image</h3>
+                    </div>
+                }
+                <div class="card-body">
+                    <h5 class="card-title">@item.Title</h5>
+                    <p class="card-text">
+                        <strong>Author:</strong> @item.Author<br />
+                        <strong>Genre:</strong> @item.Genre<br />
+                        <strong>Available:</strong> @item.AvailableCopies / @item.TotalCopies
+                    </p>
+                    <div class="btn-group w-100">
+                        <a asp-action="Details" asp-route-id="@item.BookId" class="btn btn-info">Details</a>
+                        <a asp-action="Edit" asp-route-id="@item.BookId" class="btn btn-warning">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.BookId" class="btn btn-danger">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

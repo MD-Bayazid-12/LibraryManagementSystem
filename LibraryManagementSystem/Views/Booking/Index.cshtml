@@ -1,0 +1,64 @@
+﻿@model IEnumerable<LibraryManagementSystem.Models.Booking>
+
+@{
+    ViewData["Title"] = "Bookings";
+}
+
+<h1>Bookings</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New Booking</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Student</th>
+            <th>Book</th>
+            <th>Booking Date</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Student.Name</td>
+                <td>@item.Book.Title</td>
+                <td>@item.BookingDate.ToShortDateString()</td>
+                <td>@item.BookingStartDate.ToShortDateString()</td>
+                <td>@item.BookingEndDate.ToShortDateString()</td>
+                <td>
+                    @switch (item.Status)
+                    {
+                        case LibraryManagementSystem.Models.BookingStatus.Active:
+                            <span class="badge bg-success">Active</span>
+                            break;
+                        case LibraryManagementSystem.Models.BookingStatus.Expired:
+                            <span class="badge bg-warning">Expired</span>
+                            break;
+                        case LibraryManagementSystem.Models.BookingStatus.Returned:
+                            <span class="badge bg-info">Returned</span>
+                            break;
+                        case LibraryManagementSystem.Models.BookingStatus.Cancelled:
+                            <span class="badge bg-danger">Cancelled</span>
+                            break;
+                    }
+                </td>
+                <td>
+                    @if (!item.IsReturned && item.Status == LibraryManagementSystem.Models.BookingStatus.Active)
+                    {
+                        <form asp-action="Return" asp-route-id="@item.BookingId" method="post" style="display: inline;">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-sm btn-success">Return</button>
+                        </form>
+                    }
+                    <a asp-action="Delete" asp-route-id="@item.BookingId" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
